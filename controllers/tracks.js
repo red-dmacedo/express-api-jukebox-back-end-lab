@@ -12,9 +12,9 @@ const handleError = (res, err) => {
   };
 };
 
-const evalSend = (res, sendObject) => {
+const evalSend = (res, sendObject, successCode = 200) => {
   if (!sendObject) { res.status(404); throw new Error('Track not found') };
-  res.status(200).json(sendObject);
+  res.status(successCode).json(sendObject);
 };
 
 router.get('/', async (req, res) => { // get all tracks
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => { // get all tracks
 router.post('/', async (req, res) => { // create track
   try {
     const track = await Track.create(req.body);
-    evalSend(res, track);
+    evalSend(res, track, 201);
   } catch (err) {
     handleError(res, err);
   };
